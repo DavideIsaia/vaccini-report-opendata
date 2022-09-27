@@ -1,16 +1,79 @@
 <template>
   <div>
-    <h1 class="title is-1">Ciao</h1>
+    <AppJumbotron />
+    <section>
+      <h1 class="title is-3">Tabella Regioni</h1>
+      <b-table
+        :data="vacciniDataSet"
+        :loading="isLoading"
+        detailed
+        :opened-detailed="[1]"
+        :striped="true"
+        detail-key="reg"
+        default-sort="dosi_somministrate"
+        default-sort-direction="desc"
+      >
+        <b-table-column field="reg" label="Regione" sortable v-slot="props">
+          {{ props.row.reg }}
+        </b-table-column>
+        <b-table-column
+          field="dosi_consegnate"
+          label="Dosi Consegnate"
+          sortable
+          centered
+          v-slot="props"
+        >
+          {{ props.row.dosi_consegnate.toLocaleString() }}
+        </b-table-column>
+        <b-table-column
+          field="dosi_somministrate"
+          label="Dosi Somministrate"
+          sortable
+          centered
+          v-slot="props"
+        >
+          {{ props.row.dosi_somministrate.toLocaleString() }}
+        </b-table-column>
+        <b-table-column
+          field="percentuale_somministrazione"
+          label="% Somministrazioni"
+          sortable
+          centered
+          v-slot="props"
+        >
+          <span
+            v-if="props.row.percentuale_somministrazione < 90"
+            class="tag is-medium is-danger"
+          >
+            {{ props.row.percentuale_somministrazione }}
+          </span>
+          <span
+            v-else-if="
+              props.row.percentuale_somministrazione >= 90 &&
+              props.row.percentuale_somministrazione < 93
+            "
+            class="tag is-medium is-warning"
+          >
+            {{ props.row.percentuale_somministrazione }}
+          </span>
+          <span v-else class="tag is-medium is-success">
+            {{ props.row.percentuale_somministrazione }}
+          </span>
+        </b-table-column>
+      </b-table>
+    </section>
   </div>
 </template>
 
 <script>
-// import HelloWorld from "./components/HelloWorld.vue";
+import AppJumbotron from "./components/AppJumbotron.vue";
 import api from "./api";
 
 export default {
   name: "App",
-  components: {},
+  components: {
+    AppJumbotron,
+  },
   data() {
     return {
       vacciniDataSet: [],
