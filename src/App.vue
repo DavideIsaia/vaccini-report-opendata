@@ -1,7 +1,7 @@
 <template>
   <div>
     <AppJumbotron />
-    <section>
+    <main>
       <h1 class="title has-text-centered is-3">Tabella Regioni</h1>
       <b-table
         :data="vacciniDataSet"
@@ -73,15 +73,30 @@
             <div class="content">
               <b-taglist attached>
                 <b-tag type="is-medium is-black">Prima Dose</b-tag>
-                <b-tag type="is-medium is-info"></b-tag>
+                <b-tag type="is-medium is-info">0</b-tag>
                 <b-tag type="is-medium is-black">Seconda Dose</b-tag>
-                <b-tag type="is-medium is-info"></b-tag>
+                <b-tag type="is-medium is-info">0</b-tag>
+                <b-tag type="is-medium is-black">Terza Dose</b-tag>
+                <b-tag type="is-medium is-info">0</b-tag>
+                <b-tag type="is-medium is-black">Booster</b-tag>
+                <b-tag type="is-medium is-info">0</b-tag>
               </b-taglist>
             </div>
           </article>
+          <div class="details">
+            Le dosi totali di vaccino somministrate sono 0 (0 soggetti di sesso
+            maschile, 0 soggetti di sesso femminile).<br />
+            Di queste dosi, 0 sono andate agli operatori sanitari /
+            socio-sanitari, 0 al personale non sanitario, 0 agli ospiti delle
+            RSA, 0 agli over 80. <br />
+            <strong>Forniture:</strong>
+            <ul>
+              <li>0</li>
+            </ul>
+          </div>
         </template>
       </b-table>
-    </section>
+    </main>
     <AppFooter />
   </div>
 </template>
@@ -103,11 +118,14 @@ export default {
       somministrazioniDataSet: [],
       anagraficaDataSet: [],
       consegneDataSet: [],
+      isLoading: false,
+      info: {},
     };
   },
   methods: {
     // aggiungiamo await in tutte le chiamate per evitare che rimangano delle promise
     async loadData() {
+      this.isLoading = true;
       this.vacciniDataSet = await api.readFile(
         `${api.API_URL}${api.VACCINI_SUMMARY_PATH}`
       );
@@ -120,6 +138,7 @@ export default {
       this.consegneDataSet = await api.readFile(
         `${api.API_URL}${api.CONSEGNE_VACCINI_PATH}`
       );
+      this.isLoading = false;
     },
   },
   mounted() {

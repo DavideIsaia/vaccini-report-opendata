@@ -1,15 +1,13 @@
 <template>
   <footer>
     <div class="content has-text-centered">
-      <p class="subtitle is-6">
-        Creato da
-        <a
-          class="subtitle is-6"
-          style="text-decoration: underline"
-          href="https://www.linkedin.com/in/davide-isaia-213b80245/"
-          >Davide Isaia</a
-        >
-      </p>
+      <a href="https://www.linkedin.com/in/davide-isaia-213b80245/">
+        <img
+          class="mylogo"
+          src="/images/logobianco.jpg"
+          alt="Logo Davide Isaia"
+        />
+      </a>
     </div>
   </footer>
 </template>
@@ -20,9 +18,16 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 footer {
   background-color: black;
-  padding: 1.5rem 0;
+  padding: 0.5rem 0;
+  .mylogo {
+    height: 6rem;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 </style>
