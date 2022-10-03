@@ -72,14 +72,22 @@
             </figure>
             <div class="content">
               <b-taglist attached>
-                <b-tag type="is-medium is-black">Prima Dose</b-tag>
-                <b-tag type="is-medium is-info">0</b-tag>
-                <b-tag type="is-medium is-black">Seconda Dose</b-tag>
-                <b-tag type="is-medium is-info">0</b-tag>
-                <b-tag type="is-medium is-black">Terza Dose</b-tag>
-                <b-tag type="is-medium is-info">0</b-tag>
-                <b-tag type="is-medium is-black">Booster</b-tag>
-                <b-tag type="is-medium is-info">0</b-tag>
+                <b-tag type="is-medium is-black"
+                  >Guariti con dose Booster</b-tag
+                >
+                <b-tag type="is-medium is-info">{{
+                  info[props.row.reg].guariti_post_1booster.toLocaleString()
+                }}</b-tag>
+                <b-tag type="is-medium is-black"
+                  >Guariti dopo 1 o 2 somministrazioni</b-tag
+                >
+                <b-tag type="is-medium is-info">{{
+                  info[props.row.reg].guariti_post_somm.toLocaleString()
+                }}</b-tag>
+                <b-tag type="is-medium is-black">Guariti non vaccinati</b-tag>
+                <b-tag type="is-medium is-info">{{
+                  info[props.row.reg].guariti_senza_somm.toLocaleString()
+                }}</b-tag>
               </b-taglist>
             </div>
           </article>
@@ -115,12 +123,15 @@ export default {
   data() {
     return {
       vacciniDataSet: [],
-      somministrazioniDataSet: [],
+      soggettiGuaritiDataSet: [],
       anagraficaDataSet: [],
-      consegneDataSet: [],
+      ultimoAggiornamento: "",
       isLoading: false,
       info: {},
     };
+  },
+  mounted() {
+    this.loadData();
   },
   methods: {
     // aggiungiamo await in tutte le chiamate per evitare che rimangano delle promise
@@ -129,22 +140,43 @@ export default {
       this.vacciniDataSet = await api.readFile(
         `${api.API_URL}${api.VACCINI_SUMMARY_PATH}`
       );
-      this.somministrazioniDataSet = await api.readFile(
-        `${api.API_URL}${api.SOMMINISTRAZIONI_SUMMARY_PATH}`
+      this.soggettiGuaritiDataSet = await api.readFile(
+        `${api.API_URL}${api.SOGGETTI_GUARITI_PATH}`
       );
       this.anagraficaDataSet = await api.readFile(
         `${api.API_URL}${api.ANAGRAFICA_SUMMARY_PATH}`
       );
-      this.consegneDataSet = await api.readFile(
-        `${api.API_URL}${api.CONSEGNE_VACCINI_PATH}`
+      this.ultimoAggiornamento = await api.readFile(
+        `${api.API_URL}${api.ULTIMO_AGGIORNAMENTO}`
       );
       this.isLoading = false;
+      this.elaborateData();
     },
-  },
-  mounted() {
-    this.loadData();
+    elaborateData() {
+      this.vacciniDataSet.map((summary) => {
+        this.info[summary.reg] = {
+          eta: 0,
+          guariti_post_1booster: 0,
+          guariti_post_somm: 0,
+          guariti_senza_somm: 0,
+        };
+        this.soggettiGuaritiDataSet
+          .filter((item) => item.area == summary.area)
+          .map((item) => {
+            const singleObj = this.info[summary.reg];
+            singleObj.eta += item.eta;
+            singleObj.guariti_post_1booster += item.guariti_post_1booster;
+            singleObj.guariti_post_somm += item.guariti_post_somm;
+            singleObj.guariti_senza_somm += item.guariti_senza_somm;
+          });
+      });
+    },
   },
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.image {
+  margin-bottom: 2rem;
+}
+</style>
