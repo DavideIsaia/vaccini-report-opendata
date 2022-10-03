@@ -32,7 +32,7 @@
     </section>
     <main class="section is-centered">
       <div class="box">
-        <h1 class="title has-text-centered is-3">Tabella Regioni</h1>
+        <h1 class="title has-text-centered is-3">Dati Regionali</h1>
         <b-table
           :data="vacciniDataSet"
           :loading="isLoading"

@@ -4,7 +4,7 @@
       <div class="content is-vcentered">
         <img src="/images/logo.png" alt="Primula Vaccini" />
         <p class="title is-2">
-          Situazione aggiornata dei vaccini anti COVID-19 in Italia
+          Situazione aggiornata dei vaccini antiCOVID in Italia
         </p>
       </div>
     </div>

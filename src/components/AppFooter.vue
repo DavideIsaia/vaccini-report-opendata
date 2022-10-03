@@ -1,13 +1,21 @@
 <template>
   <footer>
     <div class="content has-text-centered">
-      <a href="https://www.linkedin.com/in/davide-isaia-213b80245/">
+      <a href="https://github.com/DavideIsaia">
         <img
           class="mylogo"
           src="/images/logobianco.jpg"
           alt="Logo Davide Isaia"
         />
       </a>
+      <div>
+        open-data disponibili su:
+        <a
+          class="link"
+          href="https://github.com/italia/covid19-opendata-vaccini"
+          >https://github.com/italia/covid19-opendata-vaccini</a
+        >
+      </div>
     </div>
   </footer>
 </template>
@@ -27,6 +35,12 @@ footer {
     opacity: 0.5;
     &:hover {
       opacity: 1;
+    }
+  }
+  .link {
+    color: grey;
+    &:hover {
+      color: white;
     }
   }
 }
